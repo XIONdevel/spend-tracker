@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: spend-tracker
+
+  security:
+    jwt: #HS256 or 512 prob
+      token: placeholder
+      expiration: placeholder
+      refresh-expiration: placeholder
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/spendtracker
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
