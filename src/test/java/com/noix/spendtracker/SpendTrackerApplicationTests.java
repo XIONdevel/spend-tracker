@@ -1,4 +1,4 @@
-package com.noix.spend_tracker;
+package com.noix.spendtracker;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
