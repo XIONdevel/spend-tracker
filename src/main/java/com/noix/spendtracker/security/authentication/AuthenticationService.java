@@ -2,8 +2,11 @@ package com.noix.spendtracker.security.authentication;
 
 import com.noix.spendtracker.exception.UsernameTakenException;
 import com.noix.spendtracker.security.jwt.JwtService;
+import com.noix.spendtracker.security.token.Token;
+import com.noix.spendtracker.security.token.TokenService;
 import com.noix.spendtracker.user.User;
 import com.noix.spendtracker.user.UserService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Optional;
 
 @Service
@@ -33,6 +37,12 @@ public class AuthenticationService {
         );
         User user = userService.loadUserByUsername(request.getUsername());
         String jwt = jwtService.createJwt(user);
+        Token token = jwtService.createToken(user);
+
+        Cookie cookie = new Cookie("token", token.getJwt());
+        cookie.setMaxAge(token.getExpiresAt().getSeconds());
+
+        response.addCookie(cookie);
         response.addHeader("Authorization", "Bearer " + jwt);
     }
 
@@ -43,11 +53,18 @@ public class AuthenticationService {
                 passwordEncoder.encode(request.getPassword())
         );
         if (optionalUser.isEmpty()) {
-            response.setStatus(409); //conflict
+            response.setStatus(HttpServletResponse.SC_CONFLICT); //409
             response.getWriter().write("Username is taken"); //todo: replace with smthing
             return;
         }
-        String jwt = jwtService.createJwt(optionalUser.get());
+        User user = optionalUser.get();
+        String jwt = jwtService.createJwt(user);
+        Token token = jwtService.createToken(user);
+
+        Cookie cookie = new Cookie("token", token.getJwt());
+        cookie.setMaxAge(token.getExpiresAt().getSeconds());
+
+        response.addCookie(cookie);
         response.addHeader("Authorization", "Bearer " + jwt);
     }
 
