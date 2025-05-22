@@ -1,13 +1,11 @@
 package com.noix.spendtracker.security.jwt;
 
-import com.noix.spendtracker.security.token.Token;
-import com.noix.spendtracker.security.token.TokenService;
+import com.noix.spendtracker.token.Token;
+import com.noix.spendtracker.token.TokenService;
 import com.noix.spendtracker.user.User;
 import com.noix.spendtracker.user.UserService;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +19,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Map;
 
 //todo: add exception handling
 @Component
@@ -66,6 +62,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 jwt = jwtService.createJwt(token.getUser());
                 response.addHeader("Authorization", "Bearer " + jwt);
             } else {
+                response.getWriter().write("Tokens expired");
                 filterChain.doFilter(request, response);
                 return;
             }
@@ -83,6 +80,7 @@ public class JwtFilter extends OncePerRequestFilter {
                         );
                 auth.setDetails(new WebAuthenticationDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(auth);
+                response.getWriter().write("Success");
             }
         }
         filterChain.doFilter(request, response);

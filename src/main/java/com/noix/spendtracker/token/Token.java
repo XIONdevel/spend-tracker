@@ -1,4 +1,4 @@
-package com.noix.spendtracker.security.token;
+package com.noix.spendtracker.token;
 
 
 import com.noix.spendtracker.user.User;
@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -25,6 +24,7 @@ public class Token {
 
     @ManyToOne
     private User user;
+    @Column(unique = true)
     private String jwt;
 
     @Column(name = "expires_at", nullable = false)

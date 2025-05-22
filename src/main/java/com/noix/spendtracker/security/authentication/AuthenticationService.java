@@ -1,9 +1,7 @@
 package com.noix.spendtracker.security.authentication;
 
-import com.noix.spendtracker.exception.UsernameTakenException;
 import com.noix.spendtracker.security.jwt.JwtService;
-import com.noix.spendtracker.security.token.Token;
-import com.noix.spendtracker.security.token.TokenService;
+import com.noix.spendtracker.token.Token;
 import com.noix.spendtracker.user.User;
 import com.noix.spendtracker.user.UserService;
 import jakarta.servlet.http.Cookie;
@@ -15,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Optional;
 
 @Service

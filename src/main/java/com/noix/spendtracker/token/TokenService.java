@@ -1,4 +1,4 @@
-package com.noix.spendtracker.security.token;
+package com.noix.spendtracker.token;
 
 import com.noix.spendtracker.user.User;
 import jakarta.servlet.http.Cookie;
@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -22,8 +21,16 @@ public class TokenService {
         if (cookies != null) {
             for (Cookie c : cookies) {
                 if (c.getName().equals("token")) {
-                    return tokenRepository.findByJwt(c.getValue())
-                            .orElse(Token.empty());
+                    Optional<Token> opToken = tokenRepository.findByJwt(c.getValue());
+                    if (opToken.isPresent()) {
+                        Token token = opToken.get();
+                        if (token.isExpired()) {
+                            tokenRepository.delete(token);
+                            return Token.empty();
+                        } else {
+                            return token;
+                        }
+                    }
                 }
             }
         }
@@ -53,6 +60,14 @@ public class TokenService {
             }
         }
         return Token.empty();
+    }
+
+    public void deleteToken(Token token) {
+        //todo: implement
+    }
+
+    public void deleteAllForUser(User user) {
+        //todo: implement
     }
 
     public Token createToken(User user, String jwt, Date exp) {

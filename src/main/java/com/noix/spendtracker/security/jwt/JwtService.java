@@ -1,7 +1,7 @@
 package com.noix.spendtracker.security.jwt;
 
-import com.noix.spendtracker.security.token.Token;
-import com.noix.spendtracker.security.token.TokenService;
+import com.noix.spendtracker.token.Token;
+import com.noix.spendtracker.token.TokenService;
 import com.noix.spendtracker.user.User;
 import com.noix.spendtracker.user.UserService;
 import io.jsonwebtoken.Claims;
@@ -58,7 +58,7 @@ public class JwtService {
                 .compact();
     }
 
-    public boolean validateToken(String jwt, User user) {
+    public boolean validateToken(String jwt, User user) { //todo: remove if unused
         return isExpired(jwt) && tokenService.validateToken(jwt, user);
     }
 
@@ -68,9 +68,7 @@ public class JwtService {
     }
 
     public boolean isExpired(String jwt) {
-        boolean value = extractExpiration(jwt).before(new Date());
-        System.out.println(value);
-        return value;
+        return extractExpiration(jwt).before(new Date());
     }
 
     public String extractUsername(String jwt) {
