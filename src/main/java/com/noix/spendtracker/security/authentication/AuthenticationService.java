@@ -1,7 +1,7 @@
 package com.noix.spendtracker.security.authentication;
 
 import com.noix.spendtracker.security.jwt.JwtService;
-import com.noix.spendtracker.token.Token;
+import com.noix.spendtracker.security.token.Token;
 import com.noix.spendtracker.user.User;
 import com.noix.spendtracker.user.UserService;
 import jakarta.servlet.http.Cookie;

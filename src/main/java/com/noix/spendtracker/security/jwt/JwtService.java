@@ -1,7 +1,7 @@
 package com.noix.spendtracker.security.jwt;
 
-import com.noix.spendtracker.token.Token;
-import com.noix.spendtracker.token.TokenService;
+import com.noix.spendtracker.security.token.Token;
+import com.noix.spendtracker.security.token.TokenService;
 import com.noix.spendtracker.user.User;
 import com.noix.spendtracker.user.UserService;
 import io.jsonwebtoken.Claims;

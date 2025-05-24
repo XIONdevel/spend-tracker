@@ -1,4 +1,4 @@
-package com.noix.spendtracker.token;
+package com.noix.spendtracker.security.token;
 
 import com.noix.spendtracker.user.User;
 import jakarta.servlet.http.Cookie;
