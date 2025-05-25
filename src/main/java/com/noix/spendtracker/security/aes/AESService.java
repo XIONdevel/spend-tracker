@@ -70,7 +70,7 @@ public class AESService {
             throw new RuntimeException(e);
         }
     }
-    
+
     public String decrypt(String cipherText) {
         if (cipherText == null) {
             throw new IllegalArgumentException("Passed cipherText can not be null");

@@ -1,7 +1,7 @@
 package com.noix.spendtracker.security.jwt;
 
-import com.noix.spendtracker.security.token.Token;
-import com.noix.spendtracker.security.token.TokenService;
+import com.noix.spendtracker.security.token.RefreshToken;
+import com.noix.spendtracker.security.token.RefreshTokenService;
 import com.noix.spendtracker.user.User;
 import com.noix.spendtracker.user.UserService;
 import io.jsonwebtoken.Claims;
@@ -30,14 +30,14 @@ public class JwtService {
     private long jwtExpiration;
     @Value("${spring.security.jwt.refresh-expiration}")
     private long refreshExpiration;
-    private final TokenService tokenService;
+    private final RefreshTokenService refreshTokenService;
     private final UserService userService;
 
 
-    public Token createToken(User user) {
+    public RefreshToken createToken(User user) {
         String jwt = generateJwt(user, refreshExpiration);
         Date exp = extractExpiration(jwt);
-        return tokenService.createToken(user, jwt, exp);
+        return refreshTokenService.createToken(user, jwt, exp);
     }
 
     public String createJwt(User user) {
@@ -59,7 +59,7 @@ public class JwtService {
     }
 
     public boolean validateToken(String jwt, User user) { //todo: remove if unused
-        return isExpired(jwt) && tokenService.validateToken(jwt, user);
+        return isExpired(jwt) && refreshTokenService.validateToken(jwt, user);
     }
 
     public boolean validateJwt(String jwt, User user) {

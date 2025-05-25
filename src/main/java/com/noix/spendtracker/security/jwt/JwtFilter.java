@@ -1,7 +1,7 @@
 package com.noix.spendtracker.security.jwt;
 
-import com.noix.spendtracker.security.token.Token;
-import com.noix.spendtracker.security.token.TokenService;
+import com.noix.spendtracker.security.token.RefreshToken;
+import com.noix.spendtracker.security.token.RefreshTokenService;
 import com.noix.spendtracker.user.User;
 import com.noix.spendtracker.user.UserService;
 import jakarta.servlet.FilterChain;
@@ -27,7 +27,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserService userService;
-    private final TokenService tokenService;
+    private final RefreshTokenService refreshService;
     private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
 
     @Override
@@ -47,9 +47,9 @@ public class JwtFilter extends OncePerRequestFilter {
 
         jwt = header.substring(7);
         if (jwtService.isExpired(jwt)) {
-            Token token = tokenService.extractToken(request);
-            if (token.isPresent()) {
-                User user = token.getUser();
+            RefreshToken refreshToken = refreshService.extractToken(request);
+            if (refreshToken.isPresent()) {
+                User user = refreshToken.getUser();
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(
                                 user,
@@ -59,7 +59,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 auth.setDetails(new WebAuthenticationDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(auth);
 
-                jwt = jwtService.createJwt(token.getUser());
+                jwt = jwtService.createJwt(refreshToken.getUser());
                 response.addHeader("Authorization", "Bearer " + jwt);
             } else {
                 response.getWriter().write("Tokens expired");

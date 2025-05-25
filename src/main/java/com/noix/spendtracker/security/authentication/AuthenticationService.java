@@ -1,7 +1,7 @@
 package com.noix.spendtracker.security.authentication;
 
 import com.noix.spendtracker.security.jwt.JwtService;
-import com.noix.spendtracker.security.token.Token;
+import com.noix.spendtracker.security.token.RefreshToken;
 import com.noix.spendtracker.user.User;
 import com.noix.spendtracker.user.UserService;
 import jakarta.servlet.http.Cookie;
@@ -34,10 +34,10 @@ public class AuthenticationService {
         );
         User user = userService.loadUserByUsername(request.getUsername());
         String jwt = jwtService.createJwt(user);
-        Token token = jwtService.createToken(user);
+        RefreshToken refreshToken = jwtService.createToken(user);
 
-        Cookie cookie = new Cookie("token", token.getJwt());
-        cookie.setMaxAge(token.getExpiresAt().getSeconds());
+        Cookie cookie = new Cookie("token", refreshToken.getJwt());
+        cookie.setMaxAge(refreshToken.getExpiresAt().getSeconds());
 
         response.addCookie(cookie);
         response.addHeader("Authorization", "Bearer " + jwt);
@@ -56,10 +56,10 @@ public class AuthenticationService {
         }
         User user = optionalUser.get();
         String jwt = jwtService.createJwt(user);
-        Token token = jwtService.createToken(user);
+        RefreshToken refreshToken = jwtService.createToken(user);
 
-        Cookie cookie = new Cookie("token", token.getJwt());
-        cookie.setMaxAge(token.getExpiresAt().getSeconds());
+        Cookie cookie = new Cookie("token", refreshToken.getJwt());
+        cookie.setMaxAge(refreshToken.getExpiresAt().getSeconds());
 
         response.addCookie(cookie);
         response.addHeader("Authorization", "Bearer " + jwt);

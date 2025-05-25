@@ -13,10 +13,11 @@ import java.util.Objects;
 
 @Data
 @Entity
+@Table(name = "refresh_token")
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class Token {
+public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,8 +35,8 @@ public class Token {
         return expiresAt.after(new Date());
     }
 
-    public static Token empty() {
-        return new Token();
+    public static RefreshToken empty() {
+        return new RefreshToken();
     }
 
     public boolean isEmpty() {
@@ -61,8 +62,8 @@ public class Token {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Token token = (Token) o;
-        return Objects.equals(id, token.id) && Objects.equals(user, token.user) && Objects.equals(jwt, token.jwt) && Objects.equals(expiresAt, token.expiresAt);
+        RefreshToken refreshToken = (RefreshToken) o;
+        return Objects.equals(id, refreshToken.id) && Objects.equals(user, refreshToken.user) && Objects.equals(jwt, refreshToken.jwt) && Objects.equals(expiresAt, refreshToken.expiresAt);
     }
 
     @Override

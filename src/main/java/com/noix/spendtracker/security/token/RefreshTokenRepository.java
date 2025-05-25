@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TokenRepository extends JpaRepository<Token, Long> {
+public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
 
-    Optional<Token> findByUser(User user);
+    Optional<RefreshToken> findByUser(User user);
 
-    List<Token> findAllByUser(User user);
+    List<RefreshToken> findAllByUser(User user);
 
-    Optional<Token> findByJwt(String jwt);
+    Optional<RefreshToken> findByJwt(String jwt);
 }
