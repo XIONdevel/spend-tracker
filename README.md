@@ -1,1 +1,1 @@
-App for tracking your spending .-.
+App for tracking your spendings .-.
