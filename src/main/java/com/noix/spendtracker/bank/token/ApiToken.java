@@ -1,4 +1,4 @@
-package com.noix.spendtracker.bank;
+package com.noix.spendtracker.bank.token;
 
 import com.noix.spendtracker.user.User;
 import jakarta.persistence.*;
@@ -34,7 +34,8 @@ public class ApiToken {
     }
 
     public boolean isEmpty() {
-        return key == null
+        return id == null
+                && key == null
                 && user == null
                 && bank == null;
     }
@@ -45,7 +46,7 @@ public class ApiToken {
 
     @Override
     public String toString() {
-        return "ApiToken{" +
+        return "Token{" +
                 "id=" + id +
                 ", key='" + key + '\'' +
                 ", user=" + user +

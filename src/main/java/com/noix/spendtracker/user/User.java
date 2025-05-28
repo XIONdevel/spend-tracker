@@ -36,6 +36,21 @@ public class User implements UserDetails {
     private Role role;
     private boolean enabled = true;
 
+    public static User empty() {
+        return new User();
+    }
+
+    public boolean isEmpty() {
+        return id == null
+                && username == null
+                && password == null
+                && email == null
+                && role == null;
+    }
+
+    public boolean isPresent() {
+        return !isEmpty();
+    }
     
     public void enable() {
         this.enabled = true;
@@ -59,7 +74,7 @@ public class User implements UserDetails {
     public boolean equals(Object obj) {
         if (obj == this)
             return true;
-        if (!(obj instanceof User user)) //will cast it to user if true o_O
+        if (!(obj instanceof User user))
             return false;
 
         return  this.id.equals(user.id)

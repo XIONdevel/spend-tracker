@@ -71,7 +71,7 @@ public class AESService {
         }
     }
 
-    public String decrypt(String cipherText) {
+    public String decrypt(String cipherText) throws AEADBadTagException {
         if (cipherText == null) {
             throw new IllegalArgumentException("Passed cipherText can not be null");
         }

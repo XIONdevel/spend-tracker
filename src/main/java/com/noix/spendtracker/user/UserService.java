@@ -25,9 +25,9 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new EntityNotFoundException("Username: " + username));
     }
 
-    public Optional<User> createUser(String username, String password) {
+    public User createUser(String username, String password) {
         if (userRepository.existsByUsername(username)) {
-            return Optional.empty();
+            return User.empty();
         } else {
             User user = userRepository.save(
                     User.builder()
@@ -37,7 +37,14 @@ public class UserService implements UserDetailsService {
                             .role(Role.USER)
                             .build()
             );
-            return Optional.of(user);
+            return user;
         }
+    }
+
+    public boolean validateUser(User user) {
+        if (user == null || user.isEmpty()) return false;
+        Optional<User> optional = userRepository.findByUsername(user.getUsername());
+        if (optional.isEmpty()) return false;
+        return optional.get().equals(user);
     }
 }

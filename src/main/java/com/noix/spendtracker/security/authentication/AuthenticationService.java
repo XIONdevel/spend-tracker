@@ -45,16 +45,15 @@ public class AuthenticationService {
 
     //todo: optionally add password complexity check
     public void register(AuthenticationRequest request, HttpServletResponse response) throws IOException {
-        Optional<User> optionalUser = userService.createUser(
+        User user = userService.createUser(
                 request.getUsername(),
                 passwordEncoder.encode(request.getPassword())
         );
-        if (optionalUser.isEmpty()) {
+        if (user.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_CONFLICT); //409
             response.getWriter().write("Username is taken"); //todo: replace with smthing
             return;
         }
-        User user = optionalUser.get();
         String jwt = jwtService.createJwt(user);
         RefreshToken refreshToken = jwtService.createToken(user);
 

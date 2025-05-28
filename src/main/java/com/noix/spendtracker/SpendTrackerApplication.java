@@ -16,12 +16,4 @@ public class SpendTrackerApplication {
 		SpringApplication.run(SpendTrackerApplication.class, args);
 	}
 
-//	public static void main(String[] args) throws Exception {
-//		KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-//		keyGen.init(256); // 256-bit key
-//		SecretKey secretKey = keyGen.generateKey();
-//		String encodedKey = Base64.getEncoder().encodeToString(secretKey.getEncoded());
-//		System.out.println("Your AES-256 Key (Base64 Encoded): " + encodedKey);
-//	}
-
 }

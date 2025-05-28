@@ -1,4 +1,4 @@
-package com.noix.spendtracker.key;
+package com.noix.spendtracker.bank.token;
 
 public enum Bank {
 
