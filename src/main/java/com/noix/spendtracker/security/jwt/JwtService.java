@@ -10,6 +10,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,18 @@ public class JwtService {
     private final RefreshTokenService refreshTokenService;
     private final UserService userService;
 
+
+    public User extractUser(HttpServletRequest request) {
+        String header = request.getHeader("Authorization");
+        if (header == null || !header.startsWith("Bearer ")) return User.empty();
+        return extractUser(header.substring(7));
+    }
+
+    public User extractUser(String jwt) {
+        if (isExpired(jwt)) return User.empty();
+        String username = extractUsername(jwt);
+        return userService.loadUserByUsername(username);
+    }
 
     public RefreshToken createToken(User user) {
         String jwt = generateJwt(user, refreshExpiration);

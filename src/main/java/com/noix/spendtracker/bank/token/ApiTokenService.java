@@ -34,7 +34,7 @@ public class ApiTokenService {
         if (opToken.isEmpty()) {
             throw new EntityNotFoundException("No tokens found for user.id: " + user.getId() + " and bank: " + bank.name());
         }
-        return aesService.decrypt(opToken.get().getKey()); //in case of AEADBadTag logger.error("GCM authentication tag does not match the calculated value")
+        return aesService.decrypt(opToken.get().getKey());
     }
 
     public void save(User user, String key, Bank bank) {
