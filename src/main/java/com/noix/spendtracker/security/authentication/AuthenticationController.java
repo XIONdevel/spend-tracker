@@ -1,5 +1,6 @@
 package com.noix.spendtracker.security.authentication;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,4 +29,15 @@ public class AuthenticationController {
     public ResponseEntity<String> check() {
         return ResponseEntity.ok("Success");
     }
+
+    @PostMapping("/logout-all")
+    public void logoutAll(HttpServletRequest request, HttpServletResponse response) {
+        authService.logoutAll(request, response);
+    }
+
+    @PostMapping("logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        authService.logout(request, response);
+    }
+
 }

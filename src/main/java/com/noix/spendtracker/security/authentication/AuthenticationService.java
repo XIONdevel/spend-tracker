@@ -2,9 +2,11 @@ package com.noix.spendtracker.security.authentication;
 
 import com.noix.spendtracker.security.jwt.JwtService;
 import com.noix.spendtracker.security.token.RefreshToken;
+import com.noix.spendtracker.security.token.RefreshTokenService;
 import com.noix.spendtracker.user.User;
 import com.noix.spendtracker.user.UserService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +24,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
-
+    private final RefreshTokenService refreshService;
 
     public void authenticate(AuthenticationRequest request, HttpServletResponse response) {
         authenticationManager.authenticate(
@@ -64,4 +65,18 @@ public class AuthenticationService {
         response.addHeader("Authorization", "Bearer " + jwt);
     }
 
+    public void logoutAll(HttpServletRequest request, HttpServletResponse response) {
+        User user = refreshService.extractToken(request).getUser();
+        refreshService.deleteAllByUser(user);
+        final Cookie c = new Cookie("token", "");
+        c.setMaxAge(1);
+        response.addCookie(c);
+    }
+
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        refreshService.deleteToken(refreshService.extractToken(request).getJwt());
+        final Cookie c = new Cookie("token", "");
+        c.setMaxAge(1);
+        response.addCookie(c);
+    }
 }

@@ -62,12 +62,13 @@ public class RefreshTokenService {
         return RefreshToken.empty();
     }
 
-    public void deleteToken(RefreshToken refreshToken) {
-        //todo: implement
+    public void deleteAllByUser(User user) {
+        if (user.isEmpty()) throw new IllegalArgumentException("User is empty");
+        tokenRepository.deleteAllByUser(user);
     }
 
-    public void deleteAllForUser(User user) {
-        //todo: implement
+    public void deleteToken(String jwt) {
+        tokenRepository.deleteByJwt(jwt);
     }
 
     public RefreshToken createToken(User user, String jwt, Date exp) {
