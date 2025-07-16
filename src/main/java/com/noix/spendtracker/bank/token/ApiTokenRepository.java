@@ -16,10 +16,7 @@ public interface ApiTokenRepository extends JpaRepository<ApiToken, Long> {
     @Query("""
             SELECT COUNT(at) > 0
             FROM ApiToken at
-            WHERE at.id =: tk.id
-                AND at.key =: tk.key
-                AND at.user.id =: tk.user.id
-                AND at.bank =: tk.bank
+            WHERE at =: tk
             """)
     boolean isExists(@Param("tk") ApiToken token);
 

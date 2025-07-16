@@ -10,12 +10,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Objects;
 
 //yes, Lombok is bad
 @Entity
 @Table(name = "app_user")
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails {
@@ -60,25 +60,32 @@ public class User implements UserDetails {
         this.enabled = false;
     }
 
+    public User(String username, String password, String email, Role role, boolean enabled) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.enabled = enabled;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();
     }
 
     @Override
-    public int hashCode() {
-        return (password.length() + email.length()) * 31;
+    public boolean equals(Object o) {
+        if (!(o instanceof User user)) return false;
+        return enabled == user.enabled
+                && Objects.equals(id, user.id)
+                && Objects.equals(username, user.username)
+                && Objects.equals(password, user.password)
+                && Objects.equals(email, user.email)
+                && role == user.role;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == this)
-            return true;
-        if (!(obj instanceof User user))
-            return false;
-
-        return  this.id.equals(user.id)
-                && this.email.equals(user.email)
-                && this.password.equals(user.password);
+    public int hashCode() {
+        return Objects.hash(id, username, password, email, role, enabled);
     }
 }

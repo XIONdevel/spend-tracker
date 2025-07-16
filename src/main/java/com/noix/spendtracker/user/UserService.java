@@ -30,12 +30,13 @@ public class UserService implements UserDetailsService {
             return User.empty();
         } else {
             User user = userRepository.save(
-                    User.builder()
-                            .username(username)
-                            .password(password)
-                            .enabled(true)
-                            .role(Role.USER)
-                            .build()
+                    new User(
+                            username,
+                            password,
+                            null,
+                            Role.USER,
+                            true
+                    )
             );
             return user;
         }

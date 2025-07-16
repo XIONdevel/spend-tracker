@@ -1,14 +1,14 @@
 package com.noix.spendtracker.security.aes;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.AEADBadTagException;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -17,10 +17,14 @@ import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@AutoConfigureMockMvc
 class AESServiceTest {
 
-    static final String plainText = "Definitely not wierd text for testing purpose";
-    static AESService service;
+    private final String plainText = "Definitely not wierd text for testing purpose";
+    private static AESService service;
+    @Autowired
+    MockMvc mockMvc;
 
     @BeforeAll
     static void setUp() throws NoSuchAlgorithmException {
@@ -32,7 +36,7 @@ class AESServiceTest {
 
     @Test
     @DisplayName("Should encrypt and decrypt string successfully")
-    void encrypt_decrypt_success() {
+    void should_encrypt_decrypt_success() throws AEADBadTagException {
         final String encrypted = service.encrypt(plainText);
         assertNotEquals(plainText, encrypted);
         final String decrypted = service.decrypt(encrypted);
