@@ -2,6 +2,7 @@ package com.noix.spendtracker.security.config;
 
 import com.noix.spendtracker.security.jwt.JwtFilter;
 import com.noix.spendtracker.user.role.Permission;
+import com.noix.spendtracker.user.role.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,11 +40,11 @@ public class SecurityConfig {
                                 "/api/register"
                         ).permitAll()
                         .requestMatchers(
+                                "/api/bank/**",
                                 "/api/check"
                         ).authenticated()
                 )
                 .rememberMe(Customizer.withDefaults());
         return http.build();
     }
-
 }
