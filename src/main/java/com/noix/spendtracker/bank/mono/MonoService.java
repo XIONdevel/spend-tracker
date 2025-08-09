@@ -3,9 +3,12 @@ package com.noix.spendtracker.bank.mono;
 import com.noix.spendtracker.bank.BankService;
 import com.noix.spendtracker.bank.token.ApiTokenService;
 import com.noix.spendtracker.bank.token.Bank;
+import com.noix.spendtracker.exception.ThirdPartyApiException;
 import com.noix.spendtracker.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -21,7 +24,7 @@ public class MonoService implements BankService {
 
     private final ApiTokenService apiService;
 
-
+    //todo: add detailed status handling
     public Mono<MonoClientDTO> fetchClientData(User user) throws AEADBadTagException {
         final String token = apiService.getTokenForUser(user, BANK);
 
@@ -29,11 +32,12 @@ public class MonoService implements BankService {
                 .uri("personal/client-info")
                 .header("X-Token", token)
                 .retrieve()
-                .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(),
+                .onStatus(HttpStatusCode::is4xxClientError,
                         clientResponse -> clientResponse.bodyToMono(String.class)
-                                .flatMap(errorBody -> Mono.error(new RuntimeException(//todo: replace with readable code
-                                        String.format("API returned an error: Status %s, Body: %s",
-                                                clientResponse.statusCode(), errorBody)))))
+                                .flatMap(errorBody -> Mono.error(new BadRequestException(errorBody))))
+                .onStatus(HttpStatusCode::is5xxServerError,
+                        clientResponse -> clientResponse.bodyToMono(String.class)
+                                .flatMap(errorBody -> Mono.error(new ThirdPartyApiException(errorBody))))
                 .bodyToMono(MonoClientDTO.class);
     }
 
