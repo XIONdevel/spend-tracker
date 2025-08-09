@@ -20,7 +20,7 @@ public interface ApiTokenRepository extends JpaRepository<ApiToken, Long> {
             """)
     boolean isExists(@Param("tk") ApiToken token);
 
-    boolean existsByKey(String key);
+    boolean existsByToken(String key);
 
 
 }

@@ -28,7 +28,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserService userService;
     private final RefreshTokenService refreshService;
-    private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
+    private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class); //todo: add logging
 
     @Override
     protected void doFilterInternal(
@@ -80,7 +80,6 @@ public class JwtFilter extends OncePerRequestFilter {
                         );
                 auth.setDetails(new WebAuthenticationDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(auth);
-                response.getWriter().write("Success");
             }
         }
         filterChain.doFilter(request, response);

@@ -19,7 +19,7 @@ public class BankController {
         return bankingService.fetchClientData(request, bank);
     }
 
-    @DeleteMapping("placeholder")
+    @DeleteMapping("/placeholder")
     public ResponseEntity<?> removeApiToken(HttpServletRequest request, @RequestBody Bank bank) {
         return null;
         //todo: implement

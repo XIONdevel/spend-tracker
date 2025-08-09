@@ -20,7 +20,7 @@ public class ApiToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String key;
+    private String token;
 
     @ManyToOne
     private User user;
@@ -35,7 +35,7 @@ public class ApiToken {
 
     public boolean isEmpty() {
         return id == null
-                && key == null
+                && token == null
                 && user == null
                 && bank == null;
     }
@@ -48,7 +48,7 @@ public class ApiToken {
     public String toString() {
         return "Token{" +
                 "id=" + id +
-                ", key='" + key + '\'' +
+                ", key='" + token + '\'' +
                 ", user=" + user +
                 ", bank=" + bank +
                 '}';
@@ -59,13 +59,13 @@ public class ApiToken {
         if (this == o) return true;
         if (!(o instanceof ApiToken apiToken)) return false;
         return Objects.equals(id, apiToken.id)
-                && Objects.equals(key, apiToken.key)
+                && Objects.equals(token, apiToken.token)
                 && Objects.equals(user, apiToken.user)
                 && bank == apiToken.bank;
     }
 
     @Override
     public int hashCode() {
-        return (key.length() + user.getEmail().length() * 7) + user.getPassword().length();
+        return (token.length() + user.getEmail().length() * 7) + user.getPassword().length();
     }
 }
