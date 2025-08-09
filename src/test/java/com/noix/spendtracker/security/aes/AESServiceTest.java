@@ -3,10 +3,7 @@ package com.noix.spendtracker.security.aes;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
 
 import javax.crypto.AEADBadTagException;
 
@@ -17,14 +14,12 @@ import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@AutoConfigureMockMvc
+@SpringBootTest
 class AESServiceTest {
 
-    private final String plainText = "Definitely not wierd text for testing purpose";
-    private static AESService service;
-    @Autowired
-    MockMvc mockMvc;
+    final String plainText = "Definitely not wierd text for testing purpose";
+    static AESService service;
+
 
     @BeforeAll
     static void setUp() throws NoSuchAlgorithmException {
