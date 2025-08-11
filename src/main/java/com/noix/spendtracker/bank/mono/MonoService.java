@@ -25,7 +25,7 @@ public class MonoService implements BankService {
     private final ApiTokenService apiService;
 
     //todo: add detailed status handling
-    public Mono<MonoClientDTO> fetchClientData(User user) throws AEADBadTagException {
+    public Mono<MonoClientDTO> fetchClientInfo(User user) throws AEADBadTagException {
         final String token = apiService.getTokenForUser(user, BANK);
 
         return webClient.get()
@@ -40,6 +40,4 @@ public class MonoService implements BankService {
                                 .flatMap(errorBody -> Mono.error(new ThirdPartyApiException(errorBody))))
                 .bodyToMono(MonoClientDTO.class);
     }
-
-
 }

@@ -32,12 +32,12 @@ public class GlobalBankingService {
         services.put(Bank.MONO, monoService);
     }
 
-    public Mono<? extends ClientDTO> fetchClientData(HttpServletRequest request, Bank bank) {
+    public Mono<? extends ClientDTO> fetchClientInfo(HttpServletRequest request, Bank bank) {
         User user = jwtService.extractUser(request);
         if (user.isEmpty()) throw new EntityNotFoundException("User not found");
 
         try {
-            return services.get(bank).fetchClientData(user);
+            return services.get(bank).fetchClientInfo(user);
         } catch (AEADBadTagException e) {
             String message = String.format(
                     "GCM authentication tag does not match the calculated value. User.id:%d, requester.ip:%s",
