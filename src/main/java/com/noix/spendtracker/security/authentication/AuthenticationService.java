@@ -9,6 +9,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-@RequiredArgsConstructor
 public class AuthenticationService {
 
     private final UserService userService;
@@ -25,6 +25,19 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenService refreshService;
+
+    @Autowired
+    public AuthenticationService(UserService userService,
+                                 JwtService jwtService,
+                                 AuthenticationManager authenticationManager,
+                                 PasswordEncoder passwordEncoder,
+                                 RefreshTokenService refreshService) {
+        this.userService = userService;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
+        this.refreshService = refreshService;
+    }
 
     public void authenticate(AuthenticationRequest request, HttpServletResponse response) {
         authenticationManager.authenticate(

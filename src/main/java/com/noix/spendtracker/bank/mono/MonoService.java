@@ -5,7 +5,6 @@ import com.noix.spendtracker.bank.token.ApiTokenService;
 import com.noix.spendtracker.bank.token.Bank;
 import com.noix.spendtracker.exception.ThirdPartyApiException;
 import com.noix.spendtracker.user.User;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatusCode;

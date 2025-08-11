@@ -2,17 +2,13 @@ package com.noix.spendtracker.user;
 
 import com.noix.spendtracker.user.role.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Objects;
 
-//yes, Lombok is bad
 @Data
 @Entity
 @Table(name = "app_user")
