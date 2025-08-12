@@ -3,7 +3,6 @@ package com.noix.spendtracker.bank.token;
 import com.noix.spendtracker.security.aes.AESService;
 import com.noix.spendtracker.user.User;
 import com.noix.spendtracker.user.UserService;
-import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -34,7 +33,7 @@ public class ApiTokenService {
         if (opToken.isEmpty()) {
             throw new EntityNotFoundException("No tokens found for user.id: " + user.getId() + " and bank: " + bank.name());
         }
-        return aesService.decrypt(opToken.get().getKey());
+        return aesService.decrypt(opToken.get().getToken());
     }
 
     public void save(User user, String key, Bank bank) {
@@ -43,13 +42,13 @@ public class ApiTokenService {
         if (!userService.validateUser(user)) throw new IllegalArgumentException("User is not valid, id: " + user.getId());
 
         final String encoded = aesService.encrypt(key);
-        if(tokenRepository.existsByKey(encoded)) {
+        if(tokenRepository.existsByToken(encoded)) {
             logger.debug("Key already stored in db");
             return;
         }
 
         ApiToken token = ApiToken.builder()
-                .key(encoded)
+                .token(encoded)
                 .bank(bank)
                 .user(user)
                 .build();

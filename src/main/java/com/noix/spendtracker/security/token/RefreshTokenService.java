@@ -72,11 +72,7 @@ public class RefreshTokenService {
     }
 
     public RefreshToken createToken(User user, String jwt, Date exp) {
-        RefreshToken refreshToken = RefreshToken.builder()
-                .user(user)
-                .jwt(jwt)
-                .expiresAt(exp)
-                .build();
+        RefreshToken refreshToken = new RefreshToken(user, jwt, exp);
         return tokenRepository.save(refreshToken);
     }
 }

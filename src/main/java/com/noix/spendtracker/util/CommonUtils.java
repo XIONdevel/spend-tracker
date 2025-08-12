@@ -1,7 +1,6 @@
 package com.noix.spendtracker.util;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Component;
 
 public class CommonUtils {
 

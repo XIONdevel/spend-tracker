@@ -11,7 +11,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -22,18 +22,26 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-@RequiredArgsConstructor
 public class JwtService {
 
-    @Value("${spring.security.jwt.secret}")
-    private String SECRET;
-    @Value("${spring.security.jwt.jwt-expiration}")
-    private long jwtExpiration;
-    @Value("${spring.security.jwt.refresh-expiration}")
-    private long refreshExpiration;
+    private final String SECRET;
+    private final long jwtExpiration;
+    private final long refreshExpiration;
     private final RefreshTokenService refreshTokenService;
     private final UserService userService;
 
+    @Autowired
+    public JwtService(RefreshTokenService refreshTokenService,
+                      UserService userService,
+                      @Value("${spring.security.jwt.refresh-expiration}")long refreshExpiration,
+                      @Value("${spring.security.jwt.jwt-expiration}")long jwtExpiration,
+                      @Value("${spring.security.jwt.secret}")String SECRET) {
+        this.refreshTokenService = refreshTokenService;
+        this.userService = userService;
+        this.refreshExpiration = refreshExpiration;
+        this.jwtExpiration = jwtExpiration;
+        this.SECRET = SECRET;
+    }
 
     public User extractUser(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
@@ -76,8 +84,8 @@ public class JwtService {
     }
 
     public boolean validateJwt(String jwt, User user) {
-        return isExpired(jwt)
-                && userService.loadUserByUsername(user.getUsername()).equals(user);
+        User test = userService.loadUserByUsername(user.getUsername());
+        return !isExpired(jwt) && test.equals(user);
     }
 
     public boolean isExpired(String jwt) {

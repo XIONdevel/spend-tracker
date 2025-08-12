@@ -2,22 +2,16 @@ package com.noix.spendtracker.user;
 
 import com.noix.spendtracker.user.role.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Objects;
 
-//yes, Lombok is bad
+@Data
 @Entity
 @Table(name = "app_user")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class User implements UserDetails {
 
     @Id
@@ -66,6 +60,18 @@ public class User implements UserDetails {
         this.email = email;
         this.role = role;
         this.enabled = enabled;
+    }
+
+    public User(Long id, String username, String password, String email, Role role, boolean enabled) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.enabled = enabled;
+    }
+
+    public User() {
     }
 
     @Override

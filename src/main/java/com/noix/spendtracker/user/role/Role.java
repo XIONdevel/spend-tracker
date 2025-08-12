@@ -10,7 +10,7 @@ import java.util.List;
 public enum Role {
 
     ADMIN(List.of(Permission.values())),
-    HELPER(List.of(Permission.AUTHENTICATED, Permission.READ, Permission.UPDATE)),
+    HELPER(List.of(Permission.READ, Permission.UPDATE)),
     USER(List.of(Permission.READ));
 
     private final List<Permission> permissions;

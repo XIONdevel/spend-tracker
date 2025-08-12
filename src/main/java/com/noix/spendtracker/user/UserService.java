@@ -1,11 +1,9 @@
 package com.noix.spendtracker.user;
 
-import com.noix.spendtracker.exception.UsernameTakenException;
 import com.noix.spendtracker.user.role.Role;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,7 +17,7 @@ public class UserService implements UserDetailsService {
     @Override
     public User loadUserByUsername(String username) {
         if (username == null || username.isEmpty()) {
-            throw new NullPointerException("Username not valid: " + username);
+            throw new IllegalArgumentException("Username not valid: " + username);
         }
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("Username: " + username));
@@ -47,5 +45,9 @@ public class UserService implements UserDetailsService {
         Optional<User> optional = userRepository.findByUsername(user.getUsername());
         if (optional.isEmpty()) return false;
         return optional.get().equals(user);
+    }
+
+    public void deleteUser(User user) {
+        userRepository.delete(user);
     }
 }

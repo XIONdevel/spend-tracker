@@ -3,10 +3,7 @@ package com.noix.spendtracker.security.token;
 
 import com.noix.spendtracker.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.Objects;
@@ -14,9 +11,6 @@ import java.util.Objects;
 @Data
 @Entity
 @Table(name = "refresh_token")
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class RefreshToken {
 
     @Id
@@ -57,6 +51,22 @@ public class RefreshToken {
                 ", jwt='" + jwt + '\'' +
                 ", expiresAt=" + expiresAt +
                 '}';
+    }
+
+    public RefreshToken() {
+    }
+
+    public RefreshToken(User user, String jwt, Date expiresAt) {
+        this.user = user;
+        this.jwt = jwt;
+        this.expiresAt = expiresAt;
+    }
+
+    public RefreshToken(Long id, User user, String jwt, Date expiresAt) {
+        this.id = id;
+        this.user = user;
+        this.jwt = jwt;
+        this.expiresAt = expiresAt;
     }
 
     @Override
